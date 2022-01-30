@@ -1,4 +1,5 @@
 ﻿using Application.MoblieProviders;
+using Application.Models;
 using Domain;
 using Domain.Dto;
 using Domain.Models;
@@ -22,14 +23,19 @@ namespace Application
         {
             var payment = new PaymentDto { Phone = phone, Amount = amount };
 
-            _ = await SendToProvider(payment, cancellationToken); //TODO: Handle result
+            var providerResponse = await SendToProvider(payment, cancellationToken); //TODO: Handle result
+
+            if (providerResponse.Status != ResponseStatus.Success)
+            {
+                TranslatableObjects.UnknownProvider.Throw();
+            }
 
             await SaveInDb(payment, cancellationToken);
         }
 
-        public async Task<string> SendToProvider(PaymentDto payment, CancellationToken cancellationToken)
+        public async Task<ProviderResponse> SendToProvider(PaymentDto payment, CancellationToken cancellationToken)
         {
-            if (!ProviderBase.TryDefineCode(payment.Phone.ProviderPrefix(), out var provider))
+            if (!Provider.TryDefineCode(payment.Phone.ProviderPrefix(), out var provider))
             {
                 TranslatableObjects.UnknownProvider.Throw();
             }
