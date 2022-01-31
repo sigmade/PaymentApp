@@ -23,14 +23,14 @@ namespace Application.MoblieProviders
         public static Provider Beeline { get; } =
             new Beeline(0, nameof(Beeline), new[] { "777", "705" });
 
+        public static Provider Tele2 { get; } =
+            new Tele2(1, nameof(Tele2), new[] { "707", "747" });
+
         public static Provider Active { get; } =
             new Active(2, nameof(Active), new[] { "701" });
 
         public static Provider Altel { get; } =
             new Altel(3, nameof(Altel), new[] { "700", "708" });
-
-        public static Provider Tele2 { get; } =
-            new Tele2(1, nameof(Tele2), new[] { "707", "747" });
 
         public abstract Task<ProviderResponse> SendPay(Payment payment, CancellationToken cancellationToken);
     }
