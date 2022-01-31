@@ -1,5 +1,5 @@
 using Application.Models;
-using Domain.Dto;
+using Domain.Models;
 
 namespace Application.MoblieProviders
 {
@@ -10,7 +10,7 @@ namespace Application.MoblieProviders
         {
         }
 
-        public async override Task<ProviderResponse> SendPay(PaymentDto payment, CancellationToken cancellationToken)
+        public async override Task<ProviderResponse> SendPay(Payment payment, CancellationToken cancellationToken)
         {
             return new() { Provider = Provider.Altel, Status = ResponseStatus.Success };
         }

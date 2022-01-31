@@ -1,4 +1,4 @@
-﻿using Application;
+﻿using Domain.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using WebAPI.Models;
@@ -9,18 +9,18 @@ namespace WebAPI.Controllers
     [ApiController]
     public class PaymentController : ControllerBase
     {
-        private readonly PaymentService _paymentService;
+        private readonly IPaymentService _paymentService;
 
-        public PaymentController(PaymentService paymentService)
+        public PaymentController(IPaymentService paymentService)
         {
             _paymentService = paymentService;
         }
 
         [HttpPost("send")]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
-        public async Task<IActionResult> NewPay([FromBody] NewPayRequest request, CancellationToken cancellationToken)
+        public async Task<IActionResult> NewPay([FromBody] NewPayRequest req, CancellationToken cancellationToken)
         {
-            await _paymentService.Handle(request.Phone, request.Amount, cancellationToken);
+            await _paymentService.Handle(new() { Phone = req.Phone, Amount = req.Amount }, cancellationToken);
 
             return NoContent();
         }

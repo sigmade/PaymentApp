@@ -1,6 +1,6 @@
 using Application.Common;
 using Application.Models;
-using Domain.Dto;
+using Domain.Models;
 
 namespace Application.MoblieProviders
 {
@@ -32,6 +32,6 @@ namespace Application.MoblieProviders
         public static Provider Tele2 { get; } =
             new Tele2(1, nameof(Tele2), new[] { "707", "747" });
 
-        public abstract Task<ProviderResponse> SendPay(PaymentDto paymentDto, CancellationToken cancellationToken);
+        public abstract Task<ProviderResponse> SendPay(Payment payment, CancellationToken cancellationToken);
     }
 }

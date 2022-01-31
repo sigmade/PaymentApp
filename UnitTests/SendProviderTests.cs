@@ -1,7 +1,7 @@
 ﻿using Application;
 using Application.MoblieProviders;
 using Application.Models;
-using Domain.Dto;
+using Domain.Models;
 using Shared.Translations.Exceptions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -17,8 +17,8 @@ namespace UnitTests
         public async void Send_To_Beeline()
         {
             //Arrange
-            var payment705 = new PaymentDto { Phone = new("+77058774213"), Amount = new(100) };
-            var payment777 = new PaymentDto { Phone = new("+77778774213"), Amount = new(100) };
+            var payment705 = new Payment { Phone = new("+77058774213"), Amount = new(100) };
+            var payment777 = new Payment { Phone = new("+77778774213"), Amount = new(100) };
 
             var successResponse = new ProviderResponse { Provider = Provider.Beeline, Status = ResponseStatus.Success};
 
@@ -37,7 +37,7 @@ namespace UnitTests
         public async void Send_To_Active()
         {
             //Arrange
-            var payment701 = new PaymentDto { Phone = new("+77018774213"), Amount = new(100) };
+            var payment701 = new Payment { Phone = new("+77018774213"), Amount = new(100) };
             var successResponse = new ProviderResponse { Provider = Provider.Active, Status = ResponseStatus.Success };
 
             //Act
@@ -52,8 +52,8 @@ namespace UnitTests
         public async void Send_To_Altel()
         {
             //Arrange
-            var payment700 = new PaymentDto { Phone = new("+77008774213"), Amount = new(100) };
-            var payment708 = new PaymentDto { Phone = new("+77088774213"), Amount = new(100) };
+            var payment700 = new Payment { Phone = new("+77008774213"), Amount = new(100) };
+            var payment708 = new Payment { Phone = new("+77088774213"), Amount = new(100) };
 
             var successResponse = new ProviderResponse { Provider = Provider.Altel, Status = ResponseStatus.Success };
 
@@ -70,8 +70,8 @@ namespace UnitTests
         public async void Send_To_Tele2()
         {
             //Arrange
-            var payment707 = new PaymentDto { Phone = new("+77078774213"), Amount = new(100) };
-            var payment747 = new PaymentDto { Phone = new("+77478774213"), Amount = new(100) };
+            var payment707 = new Payment { Phone = new("+77078774213"), Amount = new(100) };
+            var payment747 = new Payment { Phone = new("+77478774213"), Amount = new(100) };
 
             var successResponse = new ProviderResponse { Provider = Provider.Tele2, Status = ResponseStatus.Success };
 
@@ -88,7 +88,7 @@ namespace UnitTests
         public async Task Throws_Exception_When_Send_Unknown_Provider()
         {
             //Arrange
-            var payment = new PaymentDto { Phone = new("+77998774213"), Amount = new(100) };
+            var payment = new Payment { Phone = new("+77998774213"), Amount = new(100) };
 
             //Act - Assert
             await Assert.ThrowsAsync<TranslatableException>(async () =>

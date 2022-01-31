@@ -1,14 +1,14 @@
 ﻿using Application.MoblieProviders;
 using Application.Models;
-using Domain;
-using Domain.Dto;
 using Domain.Models;
-using Domain.ValueObjects;
+using Domain.Services;
+using Infrastructure;
+using Infrastructure.Models;
 using Shared.Translations.Constants;
 
 namespace Application
 {
-    public class PaymentService
+    public class PaymentService : IPaymentService
     {
         private readonly ApplicationDbContext _dbContext;
 
@@ -19,21 +19,19 @@ namespace Application
 
         public PaymentService() { }
 
-        public async Task Handle(Phone phone, Amount amount, CancellationToken cancellationToken)
+        public async Task Handle(Payment payment, CancellationToken cancellationToken)
         {
-            var payment = new PaymentDto { Phone = phone, Amount = amount };
-
-            var providerResponse = await SendToProvider(payment, cancellationToken); //TODO: Handle result
+            var providerResponse = await SendToProvider(payment, cancellationToken);
 
             if (providerResponse.Status != ResponseStatus.Success)
             {
-                TranslatableObjects.UnknownProvider.Throw();
+                TranslatableObjects.ProviderError.Throw();
             }
 
             await SaveInDb(payment, cancellationToken);
         }
 
-        public async Task<ProviderResponse> SendToProvider(PaymentDto payment, CancellationToken cancellationToken)
+        public async Task<ProviderResponse> SendToProvider(Payment payment, CancellationToken cancellationToken)
         {
             if (!Provider.TryDefineCode(payment.Phone.ProviderPrefix(), out var provider))
             {
@@ -43,9 +41,9 @@ namespace Application
             return await provider.SendPay(payment, cancellationToken);
         }
 
-        private async Task SaveInDb(PaymentDto payment, CancellationToken cancellationToken)
+        private async Task SaveInDb(Payment payment, CancellationToken cancellationToken)
         {
-            _dbContext.Payments.Add(Payment.New(payment));
+            _dbContext.Payments.Add(PaymentEntity.New(payment));
             await _dbContext.SaveChangesAsync(cancellationToken);
         }
     }
