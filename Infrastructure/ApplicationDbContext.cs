@@ -1,8 +1,8 @@
-﻿using Domain.Config;
-using Domain.Models;
+﻿using Infrastructure.Config;
+using Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Domain
+namespace Infrastructure
 {
     public class ApplicationDbContext : DbContext
     {
@@ -11,7 +11,7 @@ namespace Domain
 
         }
 
-        public DbSet<Payment> Payments { get; private set; }
+        public DbSet<PaymentEntity> Payments { get; private set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

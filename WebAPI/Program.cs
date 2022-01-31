@@ -1,5 +1,6 @@
 using Application;
-using Domain;
+using Domain.Services;
+using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using NLog;
@@ -48,7 +49,7 @@ try
             }
         });
     });
-    builder.Services.AddScoped<PaymentService>();
+    builder.Services.AddScoped<IPaymentService, PaymentService>();
 
     var app = builder.Build();
 
