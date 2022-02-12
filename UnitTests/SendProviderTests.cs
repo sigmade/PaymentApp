@@ -20,7 +20,7 @@ namespace UnitTests
             var payment705 = new Payment { Phone = new("+77058774213"), Amount = new(100) };
             var payment777 = new Payment { Phone = new("+77778774213"), Amount = new(100) };
 
-            var successResponse = new ProviderResponse { Provider = Provider.Beeline, Status = ResponseStatus.Success};
+            var successResponse = new ProviderResponse { Provider = Provider.Beeline, Status = ResponseStatus.Success };
 
             //Act
             var result705 = await PaymentService.SendToProvider(payment705, new CancellationToken());

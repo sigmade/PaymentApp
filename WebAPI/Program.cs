@@ -2,6 +2,7 @@ using Application;
 using Domain.Services;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.OpenApi.Models;
 using NLog;
 using NLog.Web;
@@ -65,6 +66,14 @@ try
     app.UseHttpsRedirection();
 
     app.UseMiddleware<RequestContextMiddleware>();
+    
+    app.UseStaticFiles();
+
+    app.UseDirectoryBrowser(new DirectoryBrowserOptions
+    {
+        FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "logs")),
+        RequestPath = "/logs"
+    });
 
     app.UseAuthorization();
 
